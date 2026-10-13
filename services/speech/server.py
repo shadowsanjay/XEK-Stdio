@@ -3,6 +3,7 @@ import io
 import os
 import threading
 import gc
+from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import Response
@@ -10,6 +11,10 @@ from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 
 load_dotenv()
+cache_dir = Path(os.getenv("HF_HUB_CACHE", "data/model-cache/hub")).resolve()
+cache_dir.mkdir(parents=True, exist_ok=True)
+os.environ.setdefault("HF_HUB_CACHE", str(cache_dir))
+os.environ.setdefault("TRANSFORMERS_CACHE", str(cache_dir))
 
 app = FastAPI(title="XEK Local Speech")
 lock = threading.Lock()
@@ -31,9 +36,10 @@ def load():
         model_id = os.getenv("TTS_MODEL", "ai4bharat/indic-parler-tts")
         auto_gpu = torch.cuda.is_available() and torch.cuda.get_device_properties(0).total_memory >= 6 * 1024**3
         device = os.getenv("TTS_DEVICE", "cuda" if auto_gpu else "cpu")
-        model = ParlerTTSForConditionalGeneration.from_pretrained(model_id).to(device)
-        tokenizer = AutoTokenizer.from_pretrained(model_id)
-        description_tokenizer = AutoTokenizer.from_pretrained(model.config.text_encoder._name_or_path)
+        model = ParlerTTSForConditionalGeneration.from_pretrained(model_id, cache_dir=str(cache_dir)).to(device)
+        tokenizer = AutoTokenizer.from_pretrained(model_id, cache_dir=str(cache_dir))
+        description_tokenizer = AutoTokenizer.from_pretrained(model.config.text_encoder._name_or_path,
+                                                              cache_dir=str(cache_dir))
 
 
 @app.get("/health")

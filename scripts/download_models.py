@@ -24,6 +24,7 @@ def main():
     profile = plan["image_profile"] if args.profile == "auto" else args.profile
     print(json.dumps({"hardware": hardware, "profile": profile, "recommendation": plan}, indent=2))
     cfg = settings()
+    cache_dir = cfg.data_dir / "model-cache" / "hub"
     # Configurable HF_TOKEN is read from the environment, never from command arguments or logs.
     token = os.getenv("HF_TOKEN")
     if profile == "ollama":
@@ -50,7 +51,7 @@ def main():
                     raise SystemExit(f"Free at least {required_free} GiB RAM before downloading/test-loading this model")
                 if hardware["disk_free_gb"] < sizes/1024**3 * 2 + 10:
                     raise SystemExit("Insufficient disk headroom for model cache")
-                snapshot_download(model, revision=info.sha, token=token,
+                snapshot_download(model, revision=info.sha, token=token, cache_dir=cache_dir,
                                   allow_patterns=["*.json", "*.safetensors", "*.model", "*.txt", "*.bin"])
             else:
                 print("Dry run: model access may still be gated until you authorize it on Hugging Face.")
@@ -89,7 +90,8 @@ def main():
     for item in files:
         folder = args.comfy_root / "models" / item["folder"]
         folder.mkdir(parents=True, exist_ok=True)
-        cached = hf_hub_download(item["repo"], filename=item["file"], revision=item["revision"], token=token)
+        cached = hf_hub_download(item["repo"], filename=item["file"], revision=item["revision"], token=token,
+                                 cache_dir=cache_dir)
         destination = folder / Path(item["file"]).name
         if not destination.exists() or destination.stat().st_size != item["bytes"]:
             shutil.copy2(cached, destination)

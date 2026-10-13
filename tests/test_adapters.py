@@ -9,6 +9,22 @@ from xek.config import settings
 from xek.schemas import CreateProject, Shot
 
 
+def test_whisper_uses_private_project_cache(monkeypatch):
+    import sys
+    import types
+    from xek.adapters import Whisper
+    from xek.config import settings
+    calls = []
+    class LocalWhisperDouble:
+        def __init__(self, name, **options):
+            calls.append(options)
+        def transcribe(self, path, **options):
+            return iter([types.SimpleNamespace(start=0, end=1, text="Tamil test")]), None
+    monkeypatch.setitem(sys.modules, "faster_whisper", types.SimpleNamespace(WhisperModel=LocalWhisperDouble))
+    Whisper().align(settings().data_dir / "test.wav", "ta")
+    assert calls[0]["download_root"] == str(settings().data_dir / "model-cache" / "whisper")
+
+
 def network(monkeypatch, handler):
     original = httpx.Client
     monkeypatch.setattr(httpx, "Client", lambda **kw: original(transport=httpx.MockTransport(handler), **kw))

@@ -1,0 +1,4 @@
+# ComfyUI v0.3.59 with the CUDA 12.4 / PyTorch 2.6 runtime.
+transformers==4.46.3
+numpy==1.26.4
+av==16.1.0
