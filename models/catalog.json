@@ -1,0 +1,26 @@
+{
+  "flux-schnell-gguf": {
+    "minimum_free_ram_gb":11, "minimum_ram_gb":15, "minimum_vram_gb":0,
+    "workflow":"workflows/flux-schnell-gguf.json",
+    "files":[
+      {"repo":"city96/FLUX.1-schnell-gguf","file":"flux1-schnell-Q4_0.gguf","folder":"diffusion_models"},
+      {"repo":"city96/t5-v1_1-xxl-encoder-gguf","file":"t5-v1_1-xxl-encoder-Q4_K_M.gguf","folder":"text_encoders"},
+      {"repo":"comfyanonymous/flux_text_encoders","file":"clip_l.safetensors","folder":"text_encoders"},
+      {"repo":"black-forest-labs/FLUX.1-schnell","file":"ae.safetensors","folder":"vae"}
+    ]
+  },
+  "flux-schnell-fp8": {
+    "workflow":"workflows/flux-schnell-fp8.json",
+    "minimum_free_ram_gb":20, "minimum_ram_gb":32, "minimum_vram_gb":16,
+    "files":[{"repo":"Comfy-Org/flux1-schnell","file":"flux1-schnell-fp8.safetensors","folder":"checkpoints"}]
+  },
+  "wan2.2-ti2v-5b": {
+    "workflow":"workflows/video.json",
+    "minimum_free_ram_gb":16, "minimum_ram_gb":24, "minimum_vram_gb":8,
+    "files":[
+      {"repo":"Comfy-Org/Wan_2.2_ComfyUI_Repackaged","file":"split_files/diffusion_models/wan2.2_ti2v_5B_fp16.safetensors","folder":"diffusion_models"},
+      {"repo":"Comfy-Org/Wan_2.2_ComfyUI_Repackaged","file":"split_files/vae/wan2.2_vae.safetensors","folder":"vae"},
+      {"repo":"Comfy-Org/Wan_2.1_ComfyUI_repackaged","file":"split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors","folder":"text_encoders"}
+    ]
+  }
+}

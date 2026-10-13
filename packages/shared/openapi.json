@@ -1,0 +1,1584 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "XEK STUDIO",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Login",
+        "operationId": "login_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects": {
+      "get": {
+        "summary": "Projects",
+        "operationId": "projects_projects_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create Project",
+        "operationId": "create_project_projects_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProject"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/projects/{project_id}": {
+      "get": {
+        "summary": "Get Project",
+        "operationId": "get_project_projects__project_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{project_id}/spec": {
+      "put": {
+        "summary": "Edit Spec",
+        "operationId": "edit_spec_projects__project_id__spec_put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProject"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{project_id}/screenplay": {
+      "put": {
+        "summary": "Edit Script",
+        "operationId": "edit_script_projects__project_id__screenplay_put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Screenplay"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{project_id}/versions": {
+      "get": {
+        "summary": "Versions",
+        "operationId": "versions_projects__project_id__versions_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{project_id}/approve": {
+      "post": {
+        "summary": "Approve",
+        "operationId": "approve_projects__project_id__approve_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{project_id}/references": {
+      "post": {
+        "summary": "Reference",
+        "operationId": "reference_projects__project_id__references_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_reference_projects__project_id__references_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{project_id}/audio": {
+      "post": {
+        "summary": "Upload Audio",
+        "operationId": "upload_audio_projects__project_id__audio_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "rights_confirmed",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "title": "Rights Confirmed"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_audio_projects__project_id__audio_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{project_id}/jobs": {
+      "post": {
+        "summary": "Queue",
+        "operationId": "queue_projects__project_id__jobs_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QueueRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jobs": {
+      "get": {
+        "summary": "Jobs",
+        "operationId": "jobs_jobs_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/jobs/{job_id}/{action}": {
+      "post": {
+        "summary": "Job Action",
+        "operationId": "job_action_jobs__job_id___action__post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          },
+          {
+            "name": "action",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Action"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{project_id}/assets": {
+      "get": {
+        "summary": "Assets",
+        "operationId": "assets_projects__project_id__assets_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assets/{asset_id}": {
+      "get": {
+        "summary": "Download",
+        "operationId": "download_assets__asset_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "asset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Asset Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/models": {
+      "get": {
+        "summary": "Models",
+        "operationId": "models_models_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/system": {
+      "get": {
+        "summary": "System",
+        "operationId": "system_system_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/hardware": {
+      "get": {
+        "summary": "Hardware Status",
+        "operationId": "hardware_status_hardware_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/youtube/connect": {
+      "post": {
+        "summary": "Connect",
+        "operationId": "connect_youtube_connect_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/youtube/callback": {
+      "get": {
+        "summary": "Oauth Callback",
+        "operationId": "oauth_callback_youtube_callback_get",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Code"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "State"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/youtube": {
+      "get": {
+        "summary": "Youtube Status",
+        "operationId": "youtube_status_youtube_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/projects/{project_id}/publish": {
+      "post": {
+        "summary": "Publish",
+        "operationId": "publish_projects__project_id__publish_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublishRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AudioTrack": {
+        "properties": {
+          "asset_path": {
+            "type": "string",
+            "title": "Asset Path"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "music",
+              "sound-effects",
+              "ambience"
+            ],
+            "title": "Kind"
+          },
+          "start": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Start"
+          },
+          "trim_start": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Trim Start",
+            "default": 0
+          },
+          "duration": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Duration"
+          },
+          "gain": {
+            "type": "number",
+            "maximum": 2.0,
+            "minimum": 0.0,
+            "title": "Gain",
+            "default": 0.25
+          },
+          "fade": {
+            "type": "number",
+            "maximum": 10.0,
+            "minimum": 0.0,
+            "title": "Fade",
+            "default": 0.5
+          },
+          "duck_under_speech": {
+            "type": "boolean",
+            "title": "Duck Under Speech",
+            "default": true
+          },
+          "license_note": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 3,
+            "title": "License Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "asset_path",
+          "kind",
+          "start",
+          "duration",
+          "license_note"
+        ],
+        "title": "AudioTrack"
+      },
+      "Body_reference_projects__project_id__references_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_reference_projects__project_id__references_post"
+      },
+      "Body_upload_audio_projects__project_id__audio_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_upload_audio_projects__project_id__audio_post"
+      },
+      "Character": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "visual_description": {
+            "type": "string",
+            "maxLength": 4000,
+            "title": "Visual Description",
+            "default": ""
+          },
+          "costume": {
+            "type": "string",
+            "title": "Costume",
+            "default": ""
+          },
+          "proportions": {
+            "type": "string",
+            "title": "Proportions",
+            "default": ""
+          },
+          "facial_features": {
+            "type": "string",
+            "title": "Facial Features",
+            "default": ""
+          },
+          "movement": {
+            "type": "string",
+            "title": "Movement",
+            "default": ""
+          },
+          "voice": {
+            "type": "string",
+            "title": "Voice",
+            "default": "A clear, expressive narrator with a low, calm voice."
+          },
+          "personality": {
+            "type": "string",
+            "title": "Personality",
+            "default": ""
+          },
+          "visual_style": {
+            "type": "string",
+            "title": "Visual Style",
+            "default": ""
+          },
+          "canonical_prompt": {
+            "type": "string",
+            "title": "Canonical Prompt",
+            "default": ""
+          },
+          "negative_prompt": {
+            "type": "string",
+            "title": "Negative Prompt",
+            "default": ""
+          },
+          "reference_assets": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reference Assets"
+          },
+          "seed": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Seed",
+            "default": 42
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "Character"
+      },
+      "CreateProject": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "prompt": {
+            "type": "string",
+            "maxLength": 40000,
+            "minLength": 10,
+            "title": "Prompt"
+          },
+          "duration_minutes": {
+            "type": "integer",
+            "enum": [
+              1,
+              3,
+              5,
+              10,
+              15,
+              20,
+              30
+            ],
+            "title": "Duration Minutes",
+            "default": 1
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "ta",
+              "en"
+            ],
+            "title": "Language",
+            "default": "ta"
+          },
+          "genre": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Genre",
+            "default": "Supernatural horror"
+          },
+          "style": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Style",
+            "default": "Dark cinematic horror comic"
+          },
+          "audience": {
+            "type": "string",
+            "title": "Audience",
+            "default": "Adults"
+          },
+          "pacing": {
+            "type": "string",
+            "title": "Pacing",
+            "default": "Suspenseful"
+          },
+          "ending": {
+            "type": "string",
+            "title": "Ending",
+            "default": "A frightening reveal"
+          },
+          "horror_intensity": {
+            "type": "integer",
+            "maximum": 5.0,
+            "minimum": 0.0,
+            "title": "Horror Intensity",
+            "default": 3
+          },
+          "universe": {
+            "type": "string",
+            "enum": [
+              "original",
+              "xek"
+            ],
+            "title": "Universe",
+            "default": "xek"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "motion-comic",
+              "video",
+              "hybrid"
+            ],
+            "title": "Mode",
+            "default": "motion-comic"
+          },
+          "production_mode": {
+            "type": "string",
+            "enum": [
+              "manual",
+              "assisted",
+              "automatic"
+            ],
+            "title": "Production Mode",
+            "default": "assisted"
+          },
+          "characters": {
+            "items": {
+              "$ref": "#/components/schemas/Character"
+            },
+            "type": "array",
+            "maxItems": 30,
+            "title": "Characters"
+          },
+          "pronunciation": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Pronunciation"
+          },
+          "audio_tracks": {
+            "items": {
+              "$ref": "#/components/schemas/AudioTrack"
+            },
+            "type": "array",
+            "maxItems": 50,
+            "title": "Audio Tracks"
+          },
+          "shorts_count": {
+            "type": "integer",
+            "maximum": 12.0,
+            "minimum": 1.0,
+            "title": "Shorts Count",
+            "default": 4
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "prompt"
+        ],
+        "title": "CreateProject"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Login": {
+        "properties": {
+          "username": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 500,
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
+        "title": "Login"
+      },
+      "PublishRequest": {
+        "properties": {
+          "asset_id": {
+            "type": "string",
+            "title": "Asset Id"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Title"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 5000,
+            "title": "Description",
+            "default": "Fictionalized story. AI-assisted synthetic visuals and narration."
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 30,
+            "title": "Tags"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "private",
+              "unlisted",
+              "public"
+            ],
+            "title": "Visibility",
+            "default": "private"
+          },
+          "publish_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publish At"
+          },
+          "owner_approved": {
+            "type": "boolean",
+            "const": true,
+            "title": "Owner Approved"
+          },
+          "contains_synthetic_media": {
+            "type": "boolean",
+            "title": "Contains Synthetic Media",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "asset_id",
+          "title",
+          "owner_approved"
+        ],
+        "title": "PublishRequest"
+      },
+      "QueueRequest": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "pattern": "^(screenplay|production|shorts)$",
+            "title": "Kind"
+          },
+          "run_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Run At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind"
+        ],
+        "title": "QueueRequest"
+      },
+      "Screenplay": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title"
+          },
+          "synopsis": {
+            "type": "string",
+            "title": "Synopsis"
+          },
+          "acts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 3,
+            "title": "Acts"
+          },
+          "character_arcs": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Character Arcs"
+          },
+          "legend_notes": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Legend Notes"
+          },
+          "shots": {
+            "items": {
+              "$ref": "#/components/schemas/Shot"
+            },
+            "type": "array",
+            "maxItems": 1000,
+            "minItems": 1,
+            "title": "Shots"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "synopsis",
+          "acts",
+          "shots"
+        ],
+        "title": "Screenplay"
+      },
+      "Shot": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "scene_id": {
+            "type": "string",
+            "title": "Scene Id"
+          },
+          "start_time": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Start Time"
+          },
+          "duration": {
+            "type": "number",
+            "maximum": 30.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Duration"
+          },
+          "location_id": {
+            "type": "string",
+            "title": "Location Id"
+          },
+          "character_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Character Ids"
+          },
+          "visual_prompt": {
+            "type": "string",
+            "maxLength": 6000,
+            "minLength": 5,
+            "title": "Visual Prompt"
+          },
+          "negative_prompt": {
+            "type": "string",
+            "title": "Negative Prompt",
+            "default": "text, watermark, low quality"
+          },
+          "camera_type": {
+            "type": "string",
+            "title": "Camera Type",
+            "default": "wide"
+          },
+          "camera_movement": {
+            "type": "string",
+            "enum": [
+              "zoom-in",
+              "zoom-out",
+              "pan-left",
+              "pan-right",
+              "static"
+            ],
+            "title": "Camera Movement",
+            "default": "zoom-in"
+          },
+          "lighting": {
+            "type": "string",
+            "title": "Lighting",
+            "default": ""
+          },
+          "mood": {
+            "type": "string",
+            "title": "Mood",
+            "default": ""
+          },
+          "dialogue": {
+            "type": "string",
+            "title": "Dialogue",
+            "default": ""
+          },
+          "narration": {
+            "type": "string",
+            "title": "Narration",
+            "default": ""
+          },
+          "speaker_id": {
+            "type": "string",
+            "title": "Speaker Id",
+            "default": "narrator"
+          },
+          "sound_effects": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Sound Effects"
+          },
+          "music_cue": {
+            "type": "string",
+            "title": "Music Cue",
+            "default": ""
+          },
+          "reference_assets": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reference Assets"
+          },
+          "seed": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Seed",
+            "default": 42
+          },
+          "hero": {
+            "type": "boolean",
+            "title": "Hero",
+            "default": false
+          },
+          "hook_score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Hook Score",
+            "default": 0.5
+          },
+          "crop_x": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crop X"
+          },
+          "generation_status": {
+            "type": "string",
+            "title": "Generation Status",
+            "default": "pending"
+          },
+          "generated_asset_path": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Generated Asset Path"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scene_id",
+          "start_time",
+          "duration",
+          "location_id",
+          "visual_prompt"
+        ],
+        "title": "Shot"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

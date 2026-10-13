@@ -1,0 +1,74 @@
+x-backend: &backend
+  build: .
+  env_file: .env
+  volumes:
+    - media:/data
+    - ./workflows:/app/workflows:ro
+    - whisper-cache:/home/xek/.cache
+  extra_hosts:
+    - host.docker.internal:host-gateway
+  restart: unless-stopped
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: xek
+      POSTGRES_USER: xek
+      POSTGRES_PASSWORD: xek-local
+    volumes: [postgres:/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U xek]
+      interval: 5s
+      retries: 20
+    restart: unless-stopped
+  redis:
+    image: redis:7-alpine
+    command: [redis-server, --appendonly, "yes"]
+    volumes: [redis:/data]
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 5s
+      retries: 20
+    restart: unless-stopped
+  migrate:
+    <<: *backend
+    command: [alembic, upgrade, head]
+    restart: "no"
+    depends_on:
+      postgres: {condition: service_healthy}
+  api:
+    <<: *backend
+    ports: [127.0.0.1:8000:8000]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      retries: 10
+  worker:
+    <<: *backend
+    command: [celery, -A, "xek.jobs:celery", worker, --concurrency=1, --loglevel=INFO]
+    depends_on:
+      api: {condition: service_healthy}
+  scheduler:
+    <<: *backend
+    command: [celery, -A, "xek.jobs:celery", beat, --loglevel=INFO, --schedule=/data/celerybeat-schedule]
+    depends_on:
+      api: {condition: service_healthy}
+  web:
+    build:
+      context: apps/web
+      args:
+        NEXT_PUBLIC_API_URL: ${PUBLIC_API_URL:-http://localhost:8000}
+    ports: [127.0.0.1:3000:3000]
+    depends_on:
+      api: {condition: service_healthy}
+    restart: unless-stopped
+
+volumes:
+  media:
+  postgres:
+  redis:
+  whisper-cache:

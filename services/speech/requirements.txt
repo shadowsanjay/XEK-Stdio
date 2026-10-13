@@ -1,0 +1,8 @@
+fastapi>=0.115,<1
+uvicorn>=0.34,<1
+python-dotenv>=1,<2
+parler-tts>=0.2,<0.3
+transformers==4.46.1
+sentencepiece>=0.2
+soundfile>=0.13
+# Separate environment from ComfyUI: its newer transformers version conflicts with Parler-TTS.
