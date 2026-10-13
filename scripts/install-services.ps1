@@ -37,7 +37,7 @@ if ($Component -in @('comfy','all')) {
   if (-not (Get-Command git -ErrorAction SilentlyContinue)) { throw 'Install Git from git-scm.com first.' }
   $xekComfy=Join-Path $xekRoot '.runtime/ComfyUI'
   if (-not (Test-Path -LiteralPath $xekComfy)) {
-    Invoke-XekCommand 'git' @('clone','https://github.com/Comfy-Org/ComfyUI.git',$xekComfy)
+    Invoke-XekCommand 'git' @('clone','--depth','1','https://github.com/Comfy-Org/ComfyUI.git',$xekComfy)
   }
   if (-not (Test-Path -LiteralPath "$xekComfy/.venv/Scripts/python.exe")) {
     Invoke-XekCommand $PythonExe @('-m','venv',"$xekComfy/.venv")
@@ -51,7 +51,7 @@ if ($Component -in @('comfy','all')) {
   Invoke-XekCommand $xekComfyPython @('-m','pip','install','-r',"$xekComfy/requirements.txt")
   $xekGguf=Join-Path $xekComfy 'custom_nodes/ComfyUI-GGUF'
   if (-not (Test-Path -LiteralPath $xekGguf)) {
-    Invoke-XekCommand 'git' @('clone','https://github.com/city96/ComfyUI-GGUF.git',$xekGguf)
+    Invoke-XekCommand 'git' @('clone','--depth','1','https://github.com/city96/ComfyUI-GGUF.git',$xekGguf)
   }
   Invoke-XekCommand $xekComfyPython @('-m','pip','install','-r',"$xekGguf/requirements.txt")
   Invoke-XekCommand $xekComfyPython @('-c','import torch; print("Torch:",torch.__version__,"CUDA:",torch.cuda.is_available())')

@@ -41,6 +41,11 @@ Ollama installation uses the normal official winget package and may require your
 not automatically accept license prompts. ComfyUI/GGUF and speech use separate private environments
 under `.runtime` because their transformer versions differ.
 
+If the Windows package-manager download stalls, run `python scripts/fetch_ollama_installer.py`.
+It downloads the official Windows release, checks its published SHA256 digest and retains partial
+downloads for resumption. Only run the resulting verified installer. Application/runtime downloads
+are separate from AI model weights and can also be large.
+
 RTX 2050 driver 555.99 can use the CUDA 12.4 torch build chosen by `-TorchBackend cu124`; newer CUDA
 builds may require a driver upgrade. The script pins torch 2.6.0 for that backend. Current ComfyUI
 dependencies may change; verify its startup logs. CPU is the default installer backend. After a
@@ -67,6 +72,9 @@ The catalog resolves actual remote file sizes and exact model revisions before t
 cached and the selected revisions are recorded in `data/model-install-manifest.json`.
 The Ollama pull command requires Ollama installed and running. Hub models use the local HF cache.
 All model IDs, paths and service URLs can be overridden in `.env`/`models/catalog.json`.
+Model download caches are stored under private `data/model-cache` by default so the application
+does not need write access to your global Hugging Face cache. Existing local login tokens stay
+in their normal account location; no token is copied into source code or installation reports.
 
 **Manual authorization:** open https://huggingface.co/ai4bharat/indic-parler-tts using your account
 and accept its access conditions yourself. The page can require sharing contact information.
@@ -87,7 +95,9 @@ python scripts/acceptance.py --run
 ```
 The launcher uses hidden helper windows and writes logs in data/logs. It verifies memory before
 launching model services and reports launches separately from readiness. It does not start duplicate
-servers intentionally: check/stop existing service processes before running it again.
+servers when a service already passes its health check. It selects CPU execution if the installed
+ComfyUI torch build cannot use CUDA. `-BootstrapOnly` starts the empty service endpoints without
+loading/downloading weights so dependencies can be checked; it does not bypass model download gates.
 
 Low-memory mode unloads Ollama after screenplay generation, ComfyUI after artwork generation and
 speech weights after synthesis. Use one heavy job at a time. The speech endpoint is on a trusted

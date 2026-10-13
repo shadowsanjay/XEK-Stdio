@@ -201,6 +201,8 @@ class Whisper:
             from faster_whisper import WhisperModel
         except ImportError:
             raise ProviderError("Install the transcription extra and download a Whisper model") from None
-        model = WhisperModel(settings().whisper_model, device="cpu", compute_type="int8")
+        cache = settings().data_dir / "model-cache" / "whisper"
+        cache.mkdir(parents=True, exist_ok=True)
+        model = WhisperModel(settings().whisper_model, device="cpu", compute_type="int8", download_root=str(cache))
         segments, _ = model.transcribe(str(audio), language=language, word_timestamps=True)
         return [{"start": s.start, "end": s.end, "text": s.text.strip()} for s in segments]
