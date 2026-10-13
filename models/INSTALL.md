@@ -59,6 +59,13 @@ https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf . These are quantizations
 not a substitution with unrelated images. FLUX schnell uses four diffusion steps; the supplied graph
 uses distilled-model conditioning and does not claim negative-prompt or identity-reference support.
 
+The Windows installer pins ComfyUI v0.3.59 and the GGUF revision instead of tracking latest.
+The current latest ComfyUI failed its startup test with PyTorch 2.6 due to a comfy-kitchen
+custom-op incompatibility. `models/comfy-constraints.txt` records the dependency versions for
+this pinned runtime. `-ComfyRef` and `-GgufRef` allow explicit revisions; changing these requires
+a new startup and inference check. ComfyUI v0.3.59 includes Wan 2.2 nodes, but video inference
+has not been validated on this machine. No AI model weights ship with these software packages.
+
 ## Downloads (dry-run first)
 
 ```

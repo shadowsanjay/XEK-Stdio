@@ -1,7 +1,9 @@
 param(
   [ValidateSet('dependencies','ollama','comfy','speech','all')][string]$Component='dependencies',
   [string]$PythonExe='python',
-  [ValidateSet('cpu','cu124')][string]$TorchBackend='cpu'
+  [ValidateSet('cpu','cu124')][string]$TorchBackend='cpu',
+  [string]$ComfyRef='v0.3.59',
+  [string]$GgufRef='6ea2651e7df66d7585f6ffee804b20e92fb38b8a'
 )
 $ErrorActionPreference='Stop'
 $xekRoot=[System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
@@ -39,6 +41,8 @@ if ($Component -in @('comfy','all')) {
   if (-not (Test-Path -LiteralPath $xekComfy)) {
     Invoke-XekCommand 'git' @('clone','--depth','1','https://github.com/Comfy-Org/ComfyUI.git',$xekComfy)
   }
+  Invoke-XekCommand 'git' @('-C',$xekComfy,'fetch','--depth','1','origin',$ComfyRef)
+  Invoke-XekCommand 'git' @('-C',$xekComfy,'checkout','--detach','FETCH_HEAD')
   if (-not (Test-Path -LiteralPath "$xekComfy/.venv/Scripts/python.exe")) {
     Invoke-XekCommand $PythonExe @('-m','venv',"$xekComfy/.venv")
   }
@@ -46,14 +50,16 @@ if ($Component -in @('comfy','all')) {
   if ($TorchBackend -eq 'cu124') {
     Invoke-XekCommand $xekComfyPython @('-m','pip','install','torch==2.6.0','torchvision==0.21.0','torchaudio==2.6.0','--index-url','https://download.pytorch.org/whl/cu124')
   } else {
-    Invoke-XekCommand $xekComfyPython @('-m','pip','install','torch','torchvision','torchaudio','--index-url','https://download.pytorch.org/whl/cpu')
+    Invoke-XekCommand $xekComfyPython @('-m','pip','install','torch==2.6.0','torchvision==0.21.0','torchaudio==2.6.0','--index-url','https://download.pytorch.org/whl/cpu')
   }
-  Invoke-XekCommand $xekComfyPython @('-m','pip','install','-r',"$xekComfy/requirements.txt")
+  Invoke-XekCommand $xekComfyPython @('-m','pip','install','-r',"$xekComfy/requirements.txt",'-c','models/comfy-constraints.txt')
   $xekGguf=Join-Path $xekComfy 'custom_nodes/ComfyUI-GGUF'
   if (-not (Test-Path -LiteralPath $xekGguf)) {
     Invoke-XekCommand 'git' @('clone','--depth','1','https://github.com/city96/ComfyUI-GGUF.git',$xekGguf)
   }
-  Invoke-XekCommand $xekComfyPython @('-m','pip','install','-r',"$xekGguf/requirements.txt")
+  Invoke-XekCommand 'git' @('-C',$xekGguf,'fetch','--depth','1','origin',$GgufRef)
+  Invoke-XekCommand 'git' @('-C',$xekGguf,'checkout','--detach','FETCH_HEAD')
+  Invoke-XekCommand $xekComfyPython @('-m','pip','install','-r',"$xekGguf/requirements.txt",'-c','models/comfy-constraints.txt')
   Invoke-XekCommand $xekComfyPython @('-c','import torch; print("Torch:",torch.__version__,"CUDA:",torch.cuda.is_available())')
   Write-Output 'ComfyUI and GGUF nodes installed in .runtime. Model weights were not downloaded.'
 }
